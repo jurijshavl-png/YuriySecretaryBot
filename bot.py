@@ -1,4 +1,5 @@
 import os
+# Обновление вручную для Render
 import logging
 import datetime
 import pytz
