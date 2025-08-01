@@ -1,5 +1,4 @@
 import os
-# Обновление вручную для Render
 import logging
 import datetime
 import pytz
@@ -25,9 +24,9 @@ def get_mock_economics():
 
 def get_mock_weather():
     return {
+        "temperature": "+18°C",
         "wind": "6.3 м/с SE",
-        "pressure": "1012 hPa (↘ падает)",
-        "temperature": "+18°C"
+        "pressure": "1012 hPa (↓ падает)"
     }
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -36,18 +35,19 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     weather = get_mock_weather()
 
     message = f"""✅ Бот активен
-🕒 Время (Вильнюс): {time_now}
+Время (Вильнюс): {time_now}
 
 💱 Экономика:
 EUR/USD: {eco['eur_usd']}
 Золото: {eco['gold']}
 Серебро: {eco['silver']}
 
-🌦 Погода:
+🌤 Погода:
 Температура: {weather['temperature']}
 Ветер: {weather['wind']}
 Давление: {weather['pressure']}
 """
+
     await update.message.reply_text(message)
 
 def main():
