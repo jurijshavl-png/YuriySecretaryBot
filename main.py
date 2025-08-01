@@ -35,7 +35,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     weather = get_mock_weather()
 
     message = f"""✅ Бот активен
-Время (Вильнюс): {time_now}
+Вильнюс: {time_now}
 
 💱 Экономика:
 EUR/USD: {eco['eur_usd']}
@@ -47,7 +47,6 @@ EUR/USD: {eco['eur_usd']}
 Ветер: {weather['wind']}
 Давление: {weather['pressure']}
 """
-
     await update.message.reply_text(message)
 
 def main():
