@@ -1,0 +1,5 @@
+python-telegram-bot>=20.0
+requests
+google-api-python-client
+oauth2client
+python-dotenv
