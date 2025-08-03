@@ -15,6 +15,6 @@ def main():
     app = ApplicationBuilder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("календарь", calendar_command))
+    app.add_handler(CommandHandler("calendar", calendar_command))
 
     app.run_polling()
