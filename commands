@@ -1,0 +1,10 @@
+	•	commands/__init__.py
+	•	commands/auto.py
+	•	commands/calendar.py
+	•	commands/dog.py
+	•	commands/documents.py
+	•	commands/fishing.py
+	•	commands/notify.py
+	•	commands/remind.py
+	•	commands/weather.py
+	•	commands/economy.py
