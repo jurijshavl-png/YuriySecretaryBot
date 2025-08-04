@@ -12,3 +12,4 @@ async def documents(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "_Позже можно прикрепить PDF-файлы._"
     )
     await update.message.reply_markdown_v2(message)
+documents_command = documents
