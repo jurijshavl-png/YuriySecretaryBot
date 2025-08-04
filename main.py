@@ -6,7 +6,7 @@ import os
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
 # Импорт команд
-from commands.fishing import fishing
+from commands.fishing import register_fishing_command
 from commands.car import car
 from commands.dog import dog
 from commands.documents import documents
