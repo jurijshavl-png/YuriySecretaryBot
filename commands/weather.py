@@ -30,3 +30,4 @@ async def weather(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         f"🎣 Совет рыболову: {weather_data['fishing_tip']}"
     )
     await update.message.reply_text(message)
+weather_command = weather
