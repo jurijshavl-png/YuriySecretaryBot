@@ -13,3 +13,4 @@ async def fishing(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "_Данные обновляются ежедневно._"
     )
     await update.message.reply_markdown_v2(message)
+fishing_command = fishing
