@@ -1,2 +1,2 @@
 # Configuration and environment variables
-TOKEN = "вставь_твой_настоящий_токен_сюда"
+TOKEN = "8473269472:AAEFDi2jEwcrI_U3fCYPKFFaJu1GURNxpU8"
