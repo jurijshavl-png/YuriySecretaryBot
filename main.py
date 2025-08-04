@@ -1,4 +1,5 @@
-from telegram.ext import Application, CommandHandler
+from telegram.ext import CommandHandler
+from bot import get_application
 from config import TELEGRAM_BOT_TOKEN
 
 # Импорты всех команд
@@ -12,7 +13,7 @@ from commands.gardening import gardening_command
 from commands.weather import weather_command
 
 def main():
-    application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
+    application = get_application()
 
     # Регистрация команд
     application.add_handler(CommandHandler("напомни", reminder_command))
