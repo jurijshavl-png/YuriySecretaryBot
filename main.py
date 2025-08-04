@@ -2,7 +2,8 @@ import logging
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
-from bot_config import TELEGRAM_BOT_TOKEN
+import os
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
 # Импорт команд
 from commands.fishing import fishing
