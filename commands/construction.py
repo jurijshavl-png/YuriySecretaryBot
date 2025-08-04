@@ -13,3 +13,4 @@ async def construction(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         "📋 Подробнее — доступно по команде /документы или /напомни."
     )
     await update.message.reply_markdown_v2(message)
+construction_command = construction
