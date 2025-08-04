@@ -1,8 +1,5 @@
-from telegram.ext import CommandHandler
-from bot import get_application
-from config import TELEGRAM_BOT_TOKEN
-
-# Импорты всех команд
+from telegram.ext import Application, CommandHandler
+from config import BOT_TOKEN
 from commands.reminder import reminder_command
 from commands.fishing import fishing_command
 from commands.car import car_command
@@ -13,17 +10,16 @@ from commands.gardening import gardening_command
 from commands.weather import weather_command
 
 def main():
-    application = get_application()
+    application = Application.builder().token(BOT_TOKEN).build()
 
-    # Регистрация команд
-    application.add_handler(CommandHandler("напомни", reminder_command))
-    application.add_handler(CommandHandler("рыбалка", fishing_command))
-    application.add_handler(CommandHandler("авто", car_command))
-    application.add_handler(CommandHandler("собака", dog_command))
-    application.add_handler(CommandHandler("документы", documents_command))
-    application.add_handler(CommandHandler("стройка", construction_command))
-    application.add_handler(CommandHandler("сад", gardening_command))
-    application.add_handler(CommandHandler("погода", weather_command))
+    application.add_handler(CommandHandler("napomni", reminder_command))
+    application.add_handler(CommandHandler("fishing", fishing_command))
+    application.add_handler(CommandHandler("car", car_command))
+    application.add_handler(CommandHandler("dog", dog_command))
+    application.add_handler(CommandHandler("documents", documents_command))
+    application.add_handler(CommandHandler("construction", construction_command))
+    application.add_handler(CommandHandler("gardening", gardening_command))
+    application.add_handler(CommandHandler("weather", weather_command))
 
     application.run_polling()
 
