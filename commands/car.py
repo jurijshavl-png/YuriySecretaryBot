@@ -12,3 +12,4 @@ async def car(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "_Все данные обновляются вручную._"
     )
     await update.message.reply_markdown_v2(message)
+car_command = car
