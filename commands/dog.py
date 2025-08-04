@@ -14,3 +14,4 @@ async def dog(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "_Все данные актуальны и соответствуют нормам ЕС._"
     )
     await update.message.reply_markdown_v2(message)
+dog_command = dog
