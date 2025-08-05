@@ -110,4 +110,4 @@ async def fishing(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"<b>🌤 Погода в районе Kintai (река Миния):</b>\n"
         f"Температура: {temp:.1f} °C\n"
         f"Облачность: {cloudiness}%\n"
-        f"Ветер: {wind_speed:.1f} м/с, направление: {wind
+        f"Ветер: {wind_speed:.1f} м/с, направление: {wind_direction}\n"
