@@ -73,17 +73,15 @@ async def fishing(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     advice = generate_fishing_advice(temp, pressure, wind_speed, cloudiness)
 
-    text = (
-        f"<b>🌤️ Погода в районе Kintai (река Миня):</b>\n"
-        f"🌡️Температура: {temp:.1f} °C\n"
-        f"☁️Облачность: {cloudiness}%\n"
-        f"💨Ветер: {wind_speed:.1f} м/с, направление: {wind_direction}\n"
-        f"📈Давление: {pressure} гПа ({pressure_tendency})\n"
-        f"🌕Фаза луны: {moon_phase}\n"
-        f"🌊Уровень воды: {water_level}\n\n"
+       text = (
+        f"<b>🌤 Погода в районе Kintai (река Миня):</b>\n"
+        f"Температура: {temp:.1f} °C\n"
+        f"Облачность: {cloudiness}%\n"
+        f"Ветер: {wind_speed:.1f} м/с, направление: {wind_direction}\n"
+        f"Атм. давление: {pressure} гПа ({pressure_tendency})\n"
+        f"Фаза луны: {moon_phase}\n"
+        f"Уровень воды: {water_level}\n\n"
         f"{advice}"
     )
 
     await update.message.reply_text(text, parse_mode="HTML")
-
-fishing_command = fishing
