@@ -81,7 +81,7 @@ def generate_fishing_advice(temp, pressure, wind_speed, cloudiness):
     )
     return advice
 
-async def fishing(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def fishing(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     global previous_pressure
     weather = await get_weather()
 
@@ -92,9 +92,9 @@ async def fishing(update: Update, context: ContextTypes.DEFAULT_TYPE):
     cloudiness = weather["clouds"]["all"]
 
     pressure_tendency = analyze_pressure_tendency(pressure, previous_pressure)
-    previous_pressure = pressure  # сохраняем текущее давление
+    previous_pressure = pressure
 
-    # Перевод ветра в направление
+    # Перевод угла в направление
     directions = ["С", "СВ", "В", "ЮВ", "Ю", "ЮЗ", "З", "СЗ"]
     wind_dir_index = round(wind_deg / 45) % 8
     wind_direction = directions[wind_dir_index]
@@ -103,10 +103,10 @@ async def fishing(update: Update, context: ContextTypes.DEFAULT_TYPE):
     moon_phase = get_moon_phase()
     water_level = get_mock_water_level()
 
-    # Генерация рыболовных советов
+    # Советы
     advice = generate_fishing_advice(temp, pressure, wind_speed, cloudiness)
 
-        text = (
+    text = (
         f"<b>🌤 Погода в районе Kintai (река Миня):</b>\n"
         f"🌡 Температура: {temp:.1f} °C\n"
         f"☁️ Облачность: {cloudiness}%\n"
@@ -118,3 +118,5 @@ async def fishing(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     await update.message.reply_text(text, parse_mode="HTML")
+
+fishing_command = fishing
