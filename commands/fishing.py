@@ -70,4 +70,4 @@ async def fishing(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(text, parse_mode="HTML")
 
 
-fishing_command = CommandHandler("рыбалка", fishing)
+application.add_handler(fishing_command)
