@@ -20,3 +20,16 @@ def analyze_pressure_tendency(current_pressure: float, previous_pressure: float)
         return "падает"
     else:
         return "стабильно"
+        from telegram.ext import CommandHandler, ContextTypes
+from telegram import Update
+
+async def weather_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    weather_data = await get_weather()
+    temp = weather_data["main"]["temp"]
+    pressure = weather_data["main"]["pressure"]
+    await update.message.reply_text(
+        f"🌡 Температура: {temp}°C\n"
+        f"🔻 Давление: {pressure} hPa"
+    )
+
+weather_command = CommandHandler("погода", weather_handler)
