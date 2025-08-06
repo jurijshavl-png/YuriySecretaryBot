@@ -35,4 +35,4 @@ async def weather_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         await update.message.reply_text(f"Ошибка при получении погоды: {e}")
 
-weather_command = CommandHandler("погода", weather_handler)
+weather_command = CommandHandler("weather", weather_handler)
