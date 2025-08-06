@@ -1,18 +1,47 @@
-from telegram import Update
-from telegram.ext import ContextTypes
+from telegram import Update, constants
+from telegram.ext import ContextTypes, CommandHandler
 
-async def dog(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    message = (
-        "<b>🐶 Информация о собаке Стелле</b>\n\n"
-        "<b>• Порода:</b> стандартный немецкий пинчер\n"
-        "<b>• Имя:</b> Стелла\n"
-        "<b>• Возраст:</b> 3 года\n"
-        "<b>• Вакцина от бешенства:</b> Nobivac RL, действует до 06.04.2028\n"
-        "<b>• DHPPI:</b> Nobivac, действует до 06.04.2026\n"
-        "<b>• Микрочип:</b> 900215001869529\n"
-        "<b>• Паспорт ЕС:</b> выдан в Литве\n\n"
-        "<i>Все данные актуальны и соответствуют нормам ЕС.</i>"
+# Статическая информация по собаке Стелле
+DOG_INFO = {
+    "name": "Стелла",
+    "breed": "Стандартный немецкий пинчер, рыжий окрас",
+    "age": "3 года",
+    "passport": "EU Pet Passport, выдан в Литве",
+    "microchip": "900215001869529 (установлен 14.03.2022)",
+    "vaccinations": {
+        "rabies": {
+            "vaccine": "Nobivac RL",
+            "date": "06.04.2025",
+            "valid_until": "06.04.2028",
+            "vet": "Aurėja Stanislauskaitė"
+        },
+        "DHPPi": {
+            "vaccine": "Nobivac DHPPi",
+            "date": "06.04.2025",
+            "valid_until": "06.04.2026"
+        }
+    }
+}
+
+async def dog_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    text = (
+        f"<b>Информация о собаке</b>\n\n"
+        f"<b>Имя:</b> {DOG_INFO['name']}\n"
+        f"<b>Порода:</b> {DOG_INFO['breed']}\n"
+        f"<b>Возраст:</b> {DOG_INFO['age']}\n\n"
+        f"<b>Паспорт:</b> {DOG_INFO['passport']}\n"
+        f"<b>Микрочип:</b> {DOG_INFO['microchip']}\n\n"
+        f"<b>Прививка от бешенства:</b>\n"
+        f"• Вакцина: {DOG_INFO['vaccinations']['rabies']['vaccine']}\n"
+        f"• Дата: {DOG_INFO['vaccinations']['rabies']['date']}\n"
+        f"• Действительна до: {DOG_INFO['vaccinations']['rabies']['valid_until']}\n"
+        f"• Врач: {DOG_INFO['vaccinations']['rabies']['vet']}\n\n"
+        f"<b>Комплексная прививка (DHPPi):</b>\n"
+        f"• Вакцина: {DOG_INFO['vaccinations']['DHPPi']['vaccine']}\n"
+        f"• Дата: {DOG_INFO['vaccinations']['DHPPi']['date']}\n"
+        f"• Действительна до: {DOG_INFO['vaccinations']['DHPPi']['valid_until']}"
     )
-    await update.message.reply_text(message, parse_mode="HTML")
+    await update.message.reply_text(text, parse_mode=constants.ParseMode.HTML)
 
-dog_command = dog
+def get_handler() -> CommandHandler:
+    return CommandHandler("dog", dog_command)
