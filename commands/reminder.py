@@ -1,27 +1,47 @@
-import re
-from datetime import datetime
 from telegram import Update
-from telegram.ext import ContextTypes
+from telegram.ext import ContextTypes, CommandHandler
+import datetime
+import asyncio
 
-reminders = []
+# Временное хранилище напоминаний (не сохраняется при перезапуске)
+reminders = {}
 
-async def reminder(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    text = update.message.text
-    pattern = r"/напомни\s+(.+?)\s+(\d{1,2}\s+\w+)"
-    match = re.search(pattern, text)
+async def reminder_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    try:
+        if len(context.args) < 2:
+            await update.message.reply_text(
+                "Использование: /напомни <через N сек/мин> <текст напоминания>\n"
+                "Примеры:\n"
+                "/напомни 10мин Полей сад\n"
+                "/напомни 30сек Проверь куртку"
+            )
+            return
 
-    if match:
-        task = match.group(1)
-        date_str = match.group(2)
-        try:
-            date_obj = datetime.strptime(date_str, "%d %B")
-            formatted_date = date_obj.strftime("%d %B")
-            reminders.append((task, formatted_date))
-            await update.message.reply_text(f"📌 Напоминание записано:\n«{task}» – {formatted_date}")
-        except ValueError:
-            await update.message.reply_text("❌ Неверный формат даты. Пример: /напомни заменить фильтр 1 октября")
-    else:
-        await update.message.reply_text("🗂 Пример: /напомни заменить фильтр 1 октября")
+        time_str = context.args[0]
+        reminder_text = " ".join(context.args[1:])
 
-# 👇 Добавь это:
-reminder_command = reminder
+        # Распознавание времени
+        if "мин" in time_str:
+            delay = int(time_str.replace("мин", "")) * 60
+        elif "сек" in time_str:
+            delay = int(time_str.replace("сек", ""))
+        else:
+            await update.message.reply_text("Укажите время в формате, например, 10мин или 30сек.")
+            return
+
+        chat_id = update.effective_chat.id
+        now = datetime.datetime.now().strftime("%H:%M:%S")
+        await update.message.reply_text(f"Напоминание установлено ({now}). Я напомню через {time_str}.")
+
+        # Планировка напоминания
+        async def send_reminder():
+            await asyncio.sleep(delay)
+            await context.bot.send_message(chat_id=chat_id, text=f"⏰ Напоминание: {reminder_text}")
+
+        asyncio.create_task(send_reminder())
+
+    except Exception as e:
+        await update.message.reply_text(f"Ошибка при создании напоминания: {e}")
+
+def get_handler() -> CommandHandler:
+    return CommandHandler("напомни", reminder_command)
