@@ -26,7 +26,7 @@ def main():
 
     application.add_handler(CommandHandler("start", start_command))
     application.add_handler(CommandHandler("napomni", reminder_command))
-    application.add_handler(CommandHandler("fishing", fishing_command))
+    application.add_handler(fishing_command)
     application.add_handler(CommandHandler("car", car_command))
     application.add_handler(CommandHandler("dog", dog_command))
     application.add_handler(CommandHandler("documents", documents_command))
