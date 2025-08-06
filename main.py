@@ -1,39 +1,33 @@
+import os
 import asyncio
-import logging
 from telegram.ext import ApplicationBuilder
 
-from commands.car import car_command
-from commands.dog import dog_command
-from commands.fishing import fishing_command
-from commands.documents import documents_command
-from commands.construction import construction_command
-from commands.gardening import gardening_command
-from commands.reminder import reminder_command
-from utils.weather import weather_command
+from commands.car import get_handler as get_car_handler
+from commands.dog import get_handler as get_dog_handler
+from commands.fishing import get_handler as get_fishing_handler
+from commands.documents import get_handler as get_documents_handler
+from commands.construction import get_handler as get_construction_handler
+from commands.weather import get_handler as get_weather_handler
+from commands.gardening import get_handler as get_gardening_handler
+from commands.reminder import get_handler as get_reminder_handler
 
-BOT_TOKEN = "8473269472:AAHoJADfo_3JAC8FfPf2lwQFnWDIxzlzWn8"  
-
-logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
-)
+TOKEN = os.getenv("BOT_TOKEN")
 
 async def main():
-    application = ApplicationBuilder().token(BOT_TOKEN).build()
+    application = ApplicationBuilder().token(TOKEN).build()
 
-    application.add_handler(car_command)
-    application.add_handler(dog_command)
-    application.add_handler(fishing_command)
-    application.add_handler(documents_command)
-    application.add_handler(construction_command)
-    application.add_handler(gardening_command)
-    application.add_handler(reminder_command)
-    application.add_handler(weather_command)
+    # Add all command handlers
+    application.add_handler(get_car_handler())
+    application.add_handler(get_dog_handler())
+    application.add_handler(get_fishing_handler())
+    application.add_handler(get_documents_handler())
+    application.add_handler(get_construction_handler())
+    application.add_handler(get_weather_handler())
+    application.add_handler(get_gardening_handler())
+    application.add_handler(get_reminder_handler())
 
-    await application.initialize()
-    await application.start()
-    print("Бот запущен и работает.")
-    await application.updater.start_polling()
-    await application.updater.idle()
+    # Start the bot
+    await application.run_polling()
 
 if __name__ == "__main__":
     asyncio.run(main())
