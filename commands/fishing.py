@@ -70,4 +70,4 @@ async def fishing(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(text, parse_mode="HTML")
 
 
-application.add_handler(fishing_command)
+
