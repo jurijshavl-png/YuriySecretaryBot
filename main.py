@@ -9,7 +9,7 @@ from commands.documents import documents_command
 from commands.construction import construction_command
 from commands.gardening import gardening_command
 from commands.reminder import reminder_command
-from weather import weather_command
+from utils.weather import weather_command
 
 BOT_TOKEN = "8473269472:AAHoJADfo_3JAC8FfPf2lwQFnWDIxzlzWn8"  
 
