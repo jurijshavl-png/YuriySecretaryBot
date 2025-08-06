@@ -1,81 +1,35 @@
 from telegram import Update
-from telegram.ext import ContextTypes
+from telegram.ext import CommandHandler, ContextTypes
 from utils.weather import get_weather
 from utils.moon import get_moon_phase
 from utils.water_level import get_mock_water_level
+from utils.weather import analyze_pressure_tendency
 
-# Предыдущее давление для анализа тенденции
-previous_pressure = None
-
-
-def analyze_pressure_tendency(current, previous):
-    if previous is None:
-        return "нет данных"
-    elif current > previous:
-        return "растёт"
-    elif current < previous:
-        return "падает"
-    else:
-        return "стабильное"
+previous_pressure = 1013  # default value
 
 
 def generate_fishing_advice(temp, pressure, wind_speed, cloudiness):
-    species = []
-    lures = []
-    techniques = []
+    advice = ""
 
-    # Температура
-    if 14 <= temp <= 20:
-        species.append("жерех")
-        lures.append("ZipBaits Khamsin SR")
-        techniques.append("быстрая проводка воблера у поверхности")
+    if temp < 5:
+        advice += "Холодно, рыба малоподвижна. Используйте медленные проводки и натуральные цвета приманок.\n"
+    elif 5 <= temp <= 15:
+        advice += "Комфортная температура. Хорошее время для ловли окуня и щуки. Приманки — воблеры ZipBaits, Megabass.\n"
+    else:
+        advice += "Тёплая погода. Активны жерех и язь. Используйте быстрые проводки и яркие приманки.\n"
 
-    if 18 <= temp <= 24:
-        species.append("язь")
-        lures.append("Megabass Great Hunting")
-        techniques.append("медленная проводка у кромки травы")
+    if pressure < 1005:
+        advice += "Низкое давление — рыба пассивна. Лучше использовать приманки с сильной вибрацией.\n"
+    elif pressure > 1020:
+        advice += "Высокое давление — хорошая активность, особенно в утренние часы.\n"
 
-    if 12 <= temp <= 16:
-        species.append("голавль")
-        lures.append("ZipBaits Rigge 56F")
-        techniques.append("проводка поперёк струи у перекатов")
+    if wind_speed > 6:
+        advice += "Сильный ветер. Рыба уходит в укрытия, стоит ловить у береговой растительности.\n"
 
-    if 16 <= temp <= 20:
-        species.append("форель")
-        lures.append("DUO Ryuki 50S")
-        techniques.append("с равномерной проводкой на участках с кислородом")
-
-    if temp < 10:
-        species.append("маловероятна активность рыбы")
-        techniques.append("поиск в ямах и укрытиях, пассивные приманки")
-
-    # Давление
-    if pressure > 1020:
-        techniques.append("деликатная подача на паузах, минимальные колебания приманки")
-    elif pressure < 1005:
-        techniques.append("использовать агрессивную подачу, провоцируя рыбу")
-
-    # Ветер
-    if wind_speed < 2:
-        lures.append("поверхностные приманки (попперы, уокеры)")
-    elif wind_speed > 5:
-        techniques.append("утяжелённые приманки и заброс по ветру")
-
-    # Облачность
     if cloudiness > 70:
-        techniques.append("яркие цвета: mat tiger, chartreuse, lime")
-    elif cloudiness < 30:
-        techniques.append("натуральные цвета: ghost minnow, silver, ayu")
-
-    # Удаление повторов
-    lures = list(set(lures))
-    techniques = list(set(techniques))
-
-    advice = (
-        f"<b>🎯 Предполагаемая активная рыба:</b> {' | '.join(species) or 'данные отсутствуют'}\n"
-        f"<b>🎣 Рекомендуемые приманки:</b> {' | '.join(lures) or 'уточните по условиям'}\n"
-        f"<b>🪝 Техника ловли:</b> {' | '.join(techniques) or 'по ситуации'}"
-    )
+        advice += "Пасмурно — используйте тёмные приманки.\n"
+    else:
+        advice += "Ясно — подойдут яркие и светлые приманки.\n"
 
     return advice
 
@@ -93,7 +47,6 @@ async def fishing(update: Update, context: ContextTypes.DEFAULT_TYPE):
     pressure_tendency = analyze_pressure_tendency(pressure, previous_pressure)
     previous_pressure = pressure
 
-    # Направление ветра
     directions = ["С", "СВ", "В", "ЮВ", "Ю", "ЮЗ", "З", "СЗ"]
     wind_dir_index = round(wind_deg / 45) % 8
     wind_direction = directions[wind_dir_index]
@@ -115,5 +68,6 @@ async def fishing(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     await update.message.reply_text(text, parse_mode="HTML")
-    fishing_command = CommandHandler("рыбалка", fishing)
-    __all__ = ["fishing_command"]
+
+
+fishing_command = CommandHandler("рыбалка", fishing)
